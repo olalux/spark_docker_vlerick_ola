@@ -1,4 +1,4 @@
-# Cloud Solutions and Modern Platforms
+# Cloud Solutions and Modern Data Platforms
 
 # Building solid data pipelines with PySpark
 
