@@ -1,16 +1,18 @@
 FROM python:3.9.13
 
+USER root
+
+RUN apt-get update
+RUN apt-get install -y default-jdk
+
 RUN useradd -ms /bin/bash ola
 USER ola
 
-WORKDIR /repo
-COPY . /repo
+WORKDIR /repo/
+COPY . /repo/
 
-RUN python -m pip install -r requirements.txt
-
-RUN apt-get update && \
-    apt-get install -y default-jdk
+RUN pip install -r /repo/requirements.txt
 
 EXPOSE 8080
 ENTRYPOINT ['python']
-CMD ["python", "/app/main.py"]
+CMD ["/repo/imdbproject.py"]
