@@ -1,10 +1,7 @@
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
-get_ipython().system('pip install xgboost')
 import pandas as pd
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
 from sklearn import metrics
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import LabelEncoder
@@ -12,7 +9,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 from sklearn.metrics import mean_absolute_error
-from xgboost import XGBRegressor
 
 BUCKET = "dmacademy-course-assets"
 file_before = "vlerick/pre_release.csv"
@@ -23,10 +19,14 @@ config = {
     "spark.hadoop.fs.s3a.aws.credentials.provider": "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider"
 }
 
-conf = SparkConf().setAll(config.items())
+config2 = {
+    "spark.jars.packages": "org.apache.hadoop:hadoop-aws:3.3.1"
+}
+
+conf = SparkConf().setAll(config2.items())
 spark = SparkSession.builder.config(conf=conf).getOrCreate()
 
-df1 = spark.read.csv(f"s3a://{BUCKET}/{file_pre}", header=True)
+df1 = spark.read.csv(f"s3a://{BUCKET}/{file_before}", header=True)
 df2 = spark.read.csv(f"s3a://{BUCKET}/{file_after}", header=True)
 
 before = df1.toPandas()
@@ -102,8 +102,10 @@ df[cat] = cat_imputer.fit_transform(df[cat])
 
 
 num_imputer = SimpleImputer(strategy='median')
-df[num] = num_imputer.fit_transform(df[num])
+print("hey im here")
 
+df[num] = num_imputer.fit_transform(df[num])
+print("hey im not here")
 
 # In[2114]:
 
@@ -211,5 +213,3 @@ val_pred
 
 val_pred = pandas_to_spark(val_pred)
 val_pred.write.json(f"s3a://{BUCKET}/vlerick/aleksandra_dziurdzia")
-
-#yyyas
