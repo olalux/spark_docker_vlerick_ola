@@ -211,3 +211,5 @@ val_pred
 
 val_pred = pandas_to_spark(val_pred)
 val_pred.write.json(f"s3a://{BUCKET}/vlerick/aleksandra_dziurdzia")
+
+#yyyas
